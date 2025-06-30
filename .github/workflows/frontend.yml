@@ -1,0 +1,82 @@
+name: Docker Build and Push Frontend
+
+on:
+  push:
+    branches: [ "develop", "homolog" ]
+    paths:
+      - "frontend/**"
+  pull_request:
+    branches: [ "develop", "homolog" ]
+    paths:
+      - "frontend/**"
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/frontend
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+jobs:
+  check-version:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.result.outputs.changed }}
+    steps:
+      - name: Check for version change
+        id: version_check
+        uses: EndBug/version-check@v2
+        with:
+          file-name: "package.json"
+      - id: result
+        run: echo "changed=${{ steps.version_check.outputs.changed }}" >> $GITHUB_OUTPUT
+
+  build-and-push:
+    if: needs.check-version.outputs.changed == 'true'
+
+    runs-on: ubuntu-latest
+    needs:
+      - check-version
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version from package.json
+        id: frontend-version
+        working-directory: ./frontend
+        run: |
+          echo "version=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        if: contains(github.ref, 'homolog')
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          context: frontend
+          file: frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ steps.frontend-version.outputs.version }}
+            ${{ steps.frontend-version.outputs.version }}-homolog
+            homolog
+          labels: |
+            ${{ steps.frontend-version.outputs.version }}
+            ${{ steps.frontend-version.outputs.version }}-homolog
