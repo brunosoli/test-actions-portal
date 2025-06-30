@@ -28,7 +28,7 @@ jobs:
         id: version_check
         uses: EndBug/version-check@v2
         with:
-          file-name: "package.json"
+          file-name: "./frontend/package.json"
       - id: result
         run: echo "changed=${{ steps.version_check.outputs.changed }}" >> $GITHUB_OUTPUT
 
