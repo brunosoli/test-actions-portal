@@ -14,7 +14,7 @@ long_description = f"""
 
 setup(
     name="camara_de_curitiba",
-    version="0.0.8",
+    version="0.0.9",
     description="Câmara de Curitiba configuration package.",
     long_description=long_description,
     classifiers=[
