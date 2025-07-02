@@ -69,9 +69,11 @@ jobs:
 
   deploy:
     name: Deploy
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' && needs.check-version.outputs.changed == 'true'
+
+    needs:
+      - check-version
 
     steps:
     - name: Deploy Backend on Amazon ECS
