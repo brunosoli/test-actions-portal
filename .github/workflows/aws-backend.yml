@@ -43,9 +43,9 @@ on:
   workflow_run:
     workflows:
       - "Docker Build and Push Backend" # backend.yml
-    branches:
-      - "develop"
-      - "homolog"
+    # branches:
+    #   - "develop"
+    #   - "homolog"
     types:
       - completed
 
