@@ -10,6 +10,9 @@ on:
     paths:
       - "backend/src/**"
 
+permissions:
+  pull-requests: read
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/backend
