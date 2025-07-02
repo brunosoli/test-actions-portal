@@ -50,6 +50,23 @@ permissions:
   contents: read
 
 jobs:
+  check-version:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.result.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check for version change
+        id: version_check
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            backend:
+              - './backend/src/camara_de_curitiba/setup.py'
+      - id: result
+        run: echo "changed=${{ steps.version_check.outputs.backend }}" >> $GITHUB_OUTPUT
+
   deploy:
     name: Deploy
     if: ${{ github.event.workflow_run.conclusion == 'success' }}

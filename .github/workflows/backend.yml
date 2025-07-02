@@ -83,13 +83,12 @@ jobs:
       #       org.label-schema.docker.cmd=docker run -d -p 8080:8080 ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.image-tag.outputs.tag }}
 
       - name: Build and push Docker image
-        if: contains(github.ref, 'homolog')
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           context: backend
           file: backend/Dockerfile
-          push: true
+          push: contains(github.ref, 'homolog')
           tags: |
             ${{ steps.backend-version.outputs.version }}
             ${{ steps.backend-version.outputs.version }}-homolog
