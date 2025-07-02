@@ -1,12 +1,12 @@
 name: Docker Build and Push Frontend
 
 on:
-  push:
-    branches: [ "develop", "homolog" ]
-    paths:
-      - "frontend/**"
   pull_request:
-    branches: [ "develop", "homolog" ]
+    types:
+      - closed
+    branches:
+      - "develop"
+      - "homolog"
     paths:
       - "frontend/**"
 
@@ -69,13 +69,12 @@ jobs:
           echo "version=$(jq -r '.version' package.json)" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
-        if: contains(github.ref, 'homolog')
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
           context: frontend
           file: frontend/Dockerfile
-          push: true
+          push: ${{ contains(github.ref, 'homolog') }}
           tags: |
             ${{ steps.frontend-version.outputs.version }}
             ${{ steps.frontend-version.outputs.version }}-homolog
