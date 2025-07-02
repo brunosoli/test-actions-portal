@@ -88,7 +88,8 @@ jobs:
           platforms: linux/amd64
           context: backend
           file: backend/Dockerfile
-          push: ${{ contains(github.ref, 'homolog') }}
+          # push: ${{ contains(github.ref, 'homolog') }}
+          push: false
           tags: |
             ${{ steps.backend-version.outputs.version }}
             ${{ steps.backend-version.outputs.version }}-homolog
