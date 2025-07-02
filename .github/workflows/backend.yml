@@ -64,8 +64,8 @@ jobs:
 
       - name: Get version from setup.py
         id: backend-version
-        working-directory: ./backend/src/camara_de_curitiba
         run: |
+          cd backend/src/camara_de_curitiba
           echo "version=$(python3 setup.py --version)" >> $GITHUB_OUTPUT
 
       # Obter os metadados pode ser uteis quando forem geradas tags de versão
