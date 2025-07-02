@@ -87,7 +87,7 @@ jobs:
         with:
           platforms: linux/amd64
           context: backend
-          file: backend/src/camara_de_curitiba/Dockerfile
+          file: backend/Dockerfile
           push: ${{ contains(github.ref, 'homolog') }}
           tags: |
             ${{ steps.backend-version.outputs.version }}
