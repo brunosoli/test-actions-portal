@@ -2,11 +2,9 @@ name: Docker Build and Push Frontend
 
 on:
   push:
-    branches: [ "develop", "homolog" ]
-    paths:
-      - "frontend/**"
-  pull_request:
-    branches: [ "develop", "homolog" ]
+    branches:
+      - "develop"
+      - "homolog"
     paths:
       - "frontend/**"
 

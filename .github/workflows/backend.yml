@@ -2,11 +2,9 @@ name: Docker Build and Push Backend
 
 on:
   push:
-    branches: [ "develop", "homolog" ]
-    paths:
-      - "backend/src/**"
-  pull_request:
-    branches: [ "develop", "homolog" ]
+    branches:
+      - "develop"
+      - "homolog"
     paths:
       - "backend/src/**"
 
