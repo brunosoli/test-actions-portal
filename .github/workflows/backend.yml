@@ -1,7 +1,9 @@
 name: Docker Build and Push Backend
 
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
       - "develop"
       - "homolog"
