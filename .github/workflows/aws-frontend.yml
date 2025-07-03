@@ -44,6 +44,7 @@ on:
     workflows:
       - "Docker Build and Push Frontend" # frontend.yml
     # branches: [ "main", "homolog" ]
+    branches: [ "homolog", "develop" ]
     types:
       - completed
 
