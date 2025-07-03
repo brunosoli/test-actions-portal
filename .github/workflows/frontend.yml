@@ -72,8 +72,8 @@ jobs:
           platforms: linux/amd64
           context: frontend
           file: frontend/Dockerfile
-          # push: ${{ contains(github.ref, 'homolog') }}
-          push: false
+          push: ${{ contains(github.ref, 'homolog') }}
+          # push: false
           tags: |
             ${{ steps.frontend-version.outputs.version }}
             ${{ steps.frontend-version.outputs.version }}-homolog
