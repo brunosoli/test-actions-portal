@@ -72,8 +72,8 @@ jobs:
           platforms: linux/amd64
           context: frontend
           file: frontend/Dockerfile
-          # push: ${{ contains(github.ref, 'homolog') }}
-          push: false
+          push: ${{ contains(github.ref, 'homolog') }}
+          # push: false
           tags: |
             ${{ steps.frontend-version.outputs.version }}
             ${{ steps.frontend-version.outputs.version }}-homolog
@@ -81,3 +81,16 @@ jobs:
           labels: |
             ${{ steps.frontend-version.outputs.version }}
             ${{ steps.frontend-version.outputs.version }}-homolog
+
+  deploy:
+    if: needs.check-version.outputs.changed == 'true'
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    needs:
+      - check-version
+
+    steps:
+    - name: Deploy Frontend on Amazon ECS
+      run: |
+        echo "::debug::Deploy FRONTEND"
