@@ -24,9 +24,7 @@ jobs:
     outputs:
       changed: ${{ steps.result.outputs.changed }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Check for version change
         id: version_check
         uses: EndBug/version-check@v2
@@ -74,7 +72,8 @@ jobs:
           platforms: linux/amd64
           context: frontend
           file: frontend/Dockerfile
-          push: ${{ contains(github.ref, 'homolog') }}
+          # push: ${{ contains(github.ref, 'homolog') }}
+          push: false
           tags: |
             ${{ steps.frontend-version.outputs.version }}
             ${{ steps.frontend-version.outputs.version }}-homolog
