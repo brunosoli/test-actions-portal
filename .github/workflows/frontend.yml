@@ -14,10 +14,6 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/frontend
 
-defaults:
-  run:
-    working-directory: ./frontend
-
 jobs:
   check-version:
     runs-on: ubuntu-latest
@@ -83,8 +79,8 @@ jobs:
             ${{ steps.frontend-version.outputs.version }}-homolog
 
   deploy:
-    if: needs.check-version.outputs.changed == 'true'
-    name: Deploy
+    if: needs.check-version.outputs.changed == 'true' && ${{ contains(github.ref, 'homolog') }}
+    name: deploy
     runs-on: ubuntu-latest
 
     needs:
