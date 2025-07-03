@@ -54,7 +54,7 @@ permissions:
 
 jobs:
   check-version:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.result.outputs.changed }}
