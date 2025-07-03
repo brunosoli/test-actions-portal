@@ -41,6 +41,10 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - check-version
+    
+    env:
+      BRANCH: ${{ contains(github.ref, 'homolog') && 'homolog' || 'develop' }}
+
     permissions:
       contents: read
       packages: write
@@ -92,8 +96,21 @@ jobs:
           push: false
           tags: |
             ${{ steps.backend-version.outputs.version }}
-            ${{ steps.backend-version.outputs.version }}-homolog
-            homolog
+            ${{ steps.backend-version.outputs.version }}-${{ env.BRANCH }}
+            ${{ env.BRANCH }}
           labels: |
             ${{ steps.backend-version.outputs.version }}
-            ${{ steps.backend-version.outputs.version }}-homolog
+            ${{ steps.backend-version.outputs.version }}-${{ env.BRANCH }}
+
+  deploy:
+    name: deploy
+    runs-on: ubuntu-latest
+    needs:
+      - check-version
+      - build-and-push
+    if: needs.check-version.outputs.changed == 'true' && contains(github.ref, 'homolog')
+
+    steps:
+    - name: Deploy Backend on Amazon ECS
+      run: |
+        echo "::debug::Deploy BACKEND"
