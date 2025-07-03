@@ -41,8 +41,9 @@ name: Deploy Frontend to Amazon ECS
 
 on:
   workflow_run:
-    workflows: ["Docker Build and Push Frontend"] # frontend.yml
-    branches: [ "main", "homolog" ]
+    workflows:
+      - "Docker Build and Push Frontend" # frontend.yml
+    # branches: [ "main", "homolog" ]
     types:
       - completed
 
@@ -51,7 +52,7 @@ permissions:
 
 jobs:
   check-version:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.result.outputs.changed }}
@@ -69,9 +70,11 @@ jobs:
 
   deploy:
     name: Deploy
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success' && needs.check-version.outputs.changed == 'true'
+
+    needs:
+      - check-version
 
     steps:
     - name: Deploy Frontend on Amazon ECS
