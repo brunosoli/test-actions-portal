@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - check-version
-    
+
     env:
       BRANCH: ${{ contains(github.ref, 'homolog') && 'homolog' || 'develop' }}
 

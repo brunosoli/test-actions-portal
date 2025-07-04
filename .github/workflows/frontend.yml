@@ -15,6 +15,20 @@ env:
   IMAGE_NAME: ${{ github.repository }}/frontend
 
 jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bump version
+        uses: phips28/gh-action-bump-version@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGEJSON_DIR:  'frontend'
+        with:
+          tag-prefix: 'v'
+          commit-message: 'ci: bump frontend to %s'
+
   check-version:
     runs-on: ubuntu-latest
     outputs:
@@ -35,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - check-version
-    
+
     env:
       BRANCH: ${{ contains(github.ref, 'homolog') && 'homolog' || 'develop' }}
 
@@ -80,7 +94,7 @@ jobs:
             ${{ env.BRANCH }}
           labels: |
             ${{ steps.frontend-version.outputs.version }}
-            ${{ steps.frontend-version.outputs.version }}-homolog
+            ${{ steps.frontend-version.outputs.version }}-${{ env.BRANCH }}
 
   deploy:
     name: deploy
