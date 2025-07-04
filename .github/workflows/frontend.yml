@@ -24,10 +24,11 @@ jobs:
         uses: phips28/gh-action-bump-version@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PACKAGEJSON_DIR:  'frontend'
+          PACKAGE_FILENAME: "./frontend/package.json"
         with:
-          tag-prefix: 'v'
-          commit-message: 'ci: bump frontend to %s'
+          tag-prefix: "v"
+          default: ""
+          commit-message: "ci: bump frontend to %s"
 
   check-version:
     runs-on: ubuntu-latest
@@ -105,6 +106,6 @@ jobs:
     if: needs.check-version.outputs.changed == 'true' && contains(github.ref, 'homolog')
 
     steps:
-    - name: Deploy Frontend on Amazon ECS
-      run: |
-        echo "::debug::Deploy FRONTEND"
+      - name: Deploy Frontend on Amazon ECS
+        run: |
+          echo "::debug::Deploy FRONTEND"
