@@ -19,6 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
 
       - name: Bump version
         uses: phips28/gh-action-bump-version@master
@@ -31,6 +33,7 @@ jobs:
           rc-wording: "homolog"
           default: ""
           commit-message: "ci: bump frontend to {{version}}"
+          target-branch: 'develop'
 
   check-version:
     runs-on: ubuntu-latest
