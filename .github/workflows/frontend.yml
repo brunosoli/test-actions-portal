@@ -28,6 +28,12 @@ jobs:
         run: |
           echo "DEPLOY_ENV = ${{ env.DEPLOY_ENV }}"
           echo "NOME = ${{ secrets.NOME }}"
+          NOME="${{ secrets.NOME }}"
+          if [[ $NOME == *"prod"* ]]; then
+            echo "produção"
+          else
+            echo "homologação"
+          fi
 
   # bump-version:
   #   runs-on: ubuntu-latest
