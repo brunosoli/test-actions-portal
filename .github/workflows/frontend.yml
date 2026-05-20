@@ -31,6 +31,8 @@ jobs:
           NOME="${{ secrets.NOME }}"
           if [[ $NOME == *"prod"* ]]; then
             echo "produção"
+          elif [[ $NOME == *"stag"* ]]; then
+            echo "staging"
           else
             echo "homologação"
           fi
