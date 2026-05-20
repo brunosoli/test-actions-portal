@@ -27,7 +27,6 @@ jobs:
       - name: Get version
         run: |
           echo "DEPLOY_ENV = ${{ env.DEPLOY_ENV }}"
-          # echo "ENVIRONMENT = ${{ environment }}"
           echo "NOME = ${{ secrets.NOME }}"
 
   # bump-version:
